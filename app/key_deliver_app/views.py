@@ -10,12 +10,16 @@ class KeyList(generics.ListCreateAPIView):
     queryset = Key.objects.all()
     serializer_class = KeySerializer
 
-    def create(self, request, *args, **kwargs):
-        # TODO: catch not unique error
-        data = {'value': generate_value()}
+    def get_serializer_with_data(self):
+        is_valid = False
+        while not is_valid:
+            serializer = self.get_serializer(data={'value': generate_value()})
+            is_valid = serializer.is_valid()
 
-        serializer = self.get_serializer(data=data)
-        serializer.is_valid(raise_exception=True)
+        return serializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer_with_data()
         self.perform_create(serializer)
 
         return Response(
