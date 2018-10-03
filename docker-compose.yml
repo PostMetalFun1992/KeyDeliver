@@ -1,0 +1,10 @@
+version: '3.1'
+services:
+    api:
+        build:
+            context: ./compose
+            dockerfile: ./Dockerfile
+        volumes:
+            - ./app:/app
+        tty: true
+        command: ["bash"]
