@@ -1,0 +1,5 @@
+# -*- restclient -*-
+
+:api_url = http://localhost:8000
+
+GET :api_url/keys/
