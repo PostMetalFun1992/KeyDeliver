@@ -9,4 +9,4 @@ services:
         ports:
             - 8000:8000/tcp
         tty: true
-        command: ["bash"]
+        command: ["./start"]
