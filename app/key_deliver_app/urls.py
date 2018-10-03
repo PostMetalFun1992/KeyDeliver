@@ -1,8 +1,9 @@
 from django.urls import path
 
-from key_deliver_app import views
+from key_deliver_app.views import KeyList, KeyDetail
 
 
 urlpatterns = [
-    path('', views.KeyList.as_view())
+    path('', KeyList.as_view()),
+    path('<int:pk>/', KeyDetail.as_view()),
 ]
