@@ -14,9 +14,9 @@ class KeyList(generics.CreateAPIView):
         keys = self.get_serializer(self.get_queryset(), many=True).data
 
         return Response({
-            'count': 0,
-            'delivered': 0,
-            'repayed': 0,
+            'count': Key.objects.count(),
+            'delivered': Key.objects.count_delivered(),
+            'repayed': Key.objects.count_repayed(),
             'keys': keys,
         })
 
