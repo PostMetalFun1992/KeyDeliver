@@ -2,4 +2,22 @@
 
 :api_url = http://localhost:8000
 
+# List
 GET :api_url/keys/
+
+# Detail
+GET :api_url/keys/1/
+
+# Generate
+POST :api_url/keys/
+
+# Deliver
+PATCH :api_url/keys/1/
+
+# Repay
+PATCH :api_url/keys/
+Content-Type: application/json
+
+{
+    "value": "AB12"
+}
