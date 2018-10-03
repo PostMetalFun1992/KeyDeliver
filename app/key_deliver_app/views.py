@@ -6,9 +6,19 @@ from key_deliver_app.serializers import KeySerializer
 from key_deliver_app.utils import generate_value
 
 
-class KeyList(generics.ListCreateAPIView):
+class KeyList(generics.CreateAPIView):
     queryset = Key.objects.all()
     serializer_class = KeySerializer
+
+    def get(self, request, *args, **kwargs):
+        keys = self.get_serializer(self.get_queryset(), many=True).data
+
+        return Response({
+            'count': 0,
+            'delivered': 0,
+            'repayed': 0,
+            'keys': keys,
+        })
 
     def get_serializer_with_data(self):
         is_valid = False
