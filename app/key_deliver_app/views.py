@@ -6,7 +6,7 @@ from key_deliver_app.serializers import KeySerializer
 from key_deliver_app.utils import generate_value
 
 
-class KeyList(generics.CreateAPIView):
+class KeyList(generics.GenericAPIView):
     queryset = Key.objects.all()
     serializer_class = KeySerializer
 
@@ -28,7 +28,7 @@ class KeyList(generics.CreateAPIView):
 
         return serializer
 
-    def create(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         serializer = self.get_serializer_with_data()
         self.perform_create(serializer)
 
@@ -42,12 +42,14 @@ class KeyDetail(generics.RetrieveUpdateAPIView):
     queryset = Key.objects.all()
     serializer_class = KeySerializer
 
-    def update(self, request, *args, **kwargs):
-        key = self.get_object()
-        key.is_delivered = True
-        key.save()
+    def patch(self, request, *args, **kwargs):
+        request.data.clear()
+        request.data.update({'is_delivered': True})
 
-        return Response(
-            self.get_serializer(key).data,
-            status=status.HTTP_200_OK
-        )
+        return super().patch(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        request.data.clear()
+        request.data.update({'is_repayed': True})
+
+        return super().put(request, *args, **kwargs)

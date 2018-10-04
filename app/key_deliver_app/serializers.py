@@ -4,13 +4,17 @@ from key_deliver_app.models import Key
 
 
 class KeySerializer(serializers.ModelSerializer):
-    def validate(self, d):
-        if d['is_repayed'] and not d['is_delivered']:
-            raise serializers.ValidationError(
-                'Cannot repay key before delivery'
-            )
+    def validate_value(self, value):
+        if not value == self.instance.value:
+            raise serializers.ValidationError('Don\'t match')
 
-        return d
+        return value
+
+    def validate_is_repayed(self, is_repayed):
+        if is_repayed and not self.instance.is_delivered:
+            raise serializers.ValidationError('Cannot repay before delivery')
+
+        return is_repayed
 
     class Meta:
         model = Key
