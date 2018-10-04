@@ -47,7 +47,7 @@ class KeyDetail(generics.RetrieveAPIView):
     def put(self, request, *args, **kwargs):
         serializer = self.get_serializer(
             self.get_object(),
-            data={**request.data, **{'is_repayed': True}}
+            data={'value': request.data.get('value'), 'is_repayed': True}
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
