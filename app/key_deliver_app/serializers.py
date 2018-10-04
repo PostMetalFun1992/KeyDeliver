@@ -14,6 +14,9 @@ class KeySerializer(serializers.ModelSerializer):
         if is_repayed and not self.instance.is_delivered:
             raise serializers.ValidationError('Cannot repay before delivery')
 
+        if is_repayed and self.instance.is_repayed:
+            raise serializers.ValidationError('Cannot repay two times')
+
         return is_repayed
 
     class Meta:
