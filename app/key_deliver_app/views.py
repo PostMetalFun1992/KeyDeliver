@@ -3,14 +3,14 @@ from rest_framework.response import Response
 
 from key_deliver_app.models import Key
 from key_deliver_app.serializers import KeySerializer
-from key_deliver_app.utils import generate_value
+from key_deliver_app.utils import generate_unique_key_value
 
 
-class KeyList(generics.GenericAPIView):
+class KeyList(generics.ListCreateAPIView):
     queryset = Key.objects.all()
     serializer_class = KeySerializer
 
-    def get(self, request, *args, **kwargs):
+    def list(self, request, *args, **kwargs):
         keys = self.get_serializer(self.get_queryset(), many=True).data
 
         return Response({
@@ -20,36 +20,36 @@ class KeyList(generics.GenericAPIView):
             'keys': keys,
         })
 
-    def get_serializer_with_data(self):
-        is_valid = False
-        while not is_valid:
-            serializer = self.get_serializer(data={'value': generate_value()})
-            is_valid = serializer.is_valid()
-
-        return serializer
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer_with_data()
-        self.perform_create(serializer)
+    def create(self, request, *args, **kwargs):
+        key = Key.objects.create(value=generate_unique_key_value())
 
         return Response(
-            serializer.data,
+            self.get_serializer(key).data,
             status=status.HTTP_201_CREATED
         )
 
 
-class KeyDetail(generics.RetrieveUpdateAPIView):
+class KeyDetail(generics.RetrieveAPIView):
     queryset = Key.objects.all()
     serializer_class = KeySerializer
 
     def patch(self, request, *args, **kwargs):
-        request.data.clear()
-        request.data.update({'is_delivered': True})
+        key = self.get_object()
+        serializer = self.get_serializer(
+            key,
+            data={'value': key.value, 'is_delivered': True}
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
 
-        return super().patch(request, *args, **kwargs)
+        return Response(serializer.data)
 
     def put(self, request, *args, **kwargs):
-        request.data.clear()
-        request.data.update({'is_repayed': True})
+        serializer = self.get_serializer(
+            self.get_object(),
+            data={**request.data, **{'is_repayed': True}}
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
 
-        return super().put(request, *args, **kwargs)
+        return Response(serializer.data)

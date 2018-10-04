@@ -12,12 +12,12 @@ GET :api_url/keys/1/
 POST :api_url/keys/
 
 # Deliver
-PATCH :api_url/keys/7/
+PATCH :api_url/keys/1/
 
 # Repay
-PUT :api_url/keys/7/
+PUT :api_url/keys/1/
 Content-Type: application/json
 
 {
-    "value": "PMzc"
+    "value": "4WkL"
 }
