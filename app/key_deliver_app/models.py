@@ -3,13 +3,11 @@ from django.core.validators import RegexValidator
 
 
 class KeyManager(models.Manager):
-    @property
     def count_delivered(self):
-        return super().get_queryset().filter(is_delivered=True).count
+        return super().get_queryset().filter(is_delivered=True).count()
 
-    @property
     def count_repayed(self):
-        return super().get_queryset().filter(is_repayed=True).count
+        return super().get_queryset().filter(is_repayed=True).count()
 
 
 class Key(models.Model):
