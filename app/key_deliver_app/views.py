@@ -1,3 +1,5 @@
+from django.shortcuts import get_object_or_404
+
 from rest_framework import generics, status
 from rest_framework.response import Response
 
@@ -44,9 +46,16 @@ class KeyDetail(generics.RetrieveAPIView):
 
         return Response(serializer.data)
 
-    def put(self, request, *args, **kwargs):
+
+class KeyRepay(generics.GenericAPIView):
+    queryset = Key.objects.all()
+    serializer_class = KeySerializer
+
+    def patch(self, request, *args, **kwargs):
+        key = get_object_or_404(Key, pk=request.data.get('id'))
+
         serializer = self.get_serializer(
-            self.get_object(),
+            key,
             data={'value': request.data.get('value'), 'is_repayed': True}
         )
         serializer.is_valid(raise_exception=True)

@@ -15,9 +15,10 @@ POST :api_url/keys/
 PATCH :api_url/keys/1/
 
 # Repay
-PUT :api_url/keys/1/
+PATCH :api_url/keys_repayer/
 Content-Type: application/json
 
 {
-    "value": "4WkL"
+    "id": 1,
+    "value": "N3am"
 }
