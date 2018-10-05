@@ -1,3 +1,4 @@
+import pytest
 from rest_framework import status
 
 from key_deliver_app.models import Key
@@ -121,18 +122,18 @@ class TestKeyDetailRepay:
         assert k.is_delivered
         assert not k.is_repayed
 
-    def test_put_prevent_to_inject_data(self, api_client):  # noqa: 811
-        start_value = 'SDFG'
-        k = Key.objects.create(value=start_value)
+    @pytest.mark.parametrize('field_name', ['is_delivered', 'is_repayed'])
+    def test_put_prevent_to_inject_data(self, api_client, field_name):  # noqa: 811
+        k = Key.objects.create(
+            value='SDFG', is_delivered=True, is_repayed=True
+
+        )
         r = api_client.put(
-            f'/keys/{k.id}/',
-            {'value': 'bnmv', 'is_delivered': True, 'is_repayed': True},
-            format='json'
+            f'/keys/{k.id}/', {field_name: False}, format='json'
         )
         k = Key.objects.get(pk=k.pk)
 
         assert r.status_code == status.HTTP_400_BAD_REQUEST
 
-        assert k.value == start_value
-        assert not k.is_delivered
-        assert not k.is_repayed
+        assert k.is_delivered
+        assert k.is_repayed

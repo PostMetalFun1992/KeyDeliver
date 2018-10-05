@@ -15,7 +15,7 @@ class Key(models.Model):
         max_length=4,
         unique=True,
         validators=[
-            RegexValidator(regex='^.{4}$', message='Length must be 4')
+            RegexValidator(regex=r'^.{4}$', message='Length must be 4')
         ]
     )
     is_delivered = models.BooleanField(default=False)

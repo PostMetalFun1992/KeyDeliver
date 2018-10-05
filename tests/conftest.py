@@ -14,5 +14,5 @@ def enable_db_access(db):
 
 
 @pytest.fixture(autouse=True)
-def api_client(db):
+def api_client():
     return APIClient()

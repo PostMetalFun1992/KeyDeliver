@@ -1,7 +1,7 @@
 import re
 
-from rest_framework import status
 import pytest
+from rest_framework import status
 
 from key_deliver_app.models import Key
 
@@ -42,5 +42,5 @@ class TestKeyList:
     @pytest.mark.parametrize('keys_count', [100])
     def test_create_many(self, api_client, keys_count):  # noqa: 811
         for _ in range(keys_count):
-            assert api_client.post('/keys/').status_code ==\
+            assert api_client.post('/keys/').status_code == \
                 status.HTTP_201_CREATED

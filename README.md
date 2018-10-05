@@ -11,4 +11,4 @@ Based on Django REST Framework, SQLite DB & PyTest
 ## Useful scripts:
 * ```./run_shell``` - runs django shell with ipython mode
 * ```./run_tests``` - starts pytest session
-* Request samples in ```./requests file``` - can run with emacs restclient.el
+* Request samples in ```./requests``` file - can run with emacs restclient.el

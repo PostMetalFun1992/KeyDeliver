@@ -1,5 +1,5 @@
-import string as s
 import random as r
+import string as s
 
 from key_deliver_app.models import Key
 
@@ -15,4 +15,4 @@ def generate_random_value(size=DEFAULT_KEY_SIZE):
 def generate_unique_key_value():
     value = generate_random_value()
     return value if not Key.objects.filter(value=value).exists() \
-        else generate_random_value()
+        else generate_unique_key_value()
