@@ -37,6 +37,7 @@ class KeyDetail(generics.RetrieveAPIView):
 
     def patch(self, request, *args, **kwargs):
         key = self.get_object()
+
         serializer = self.get_serializer(
             key,
             data={'value': key.value, 'is_delivered': True}
@@ -47,8 +48,7 @@ class KeyDetail(generics.RetrieveAPIView):
         return Response(serializer.data)
 
 
-class KeyRepay(generics.GenericAPIView):
-    queryset = Key.objects.all()
+class KeyRepayer(generics.GenericAPIView):
     serializer_class = KeySerializer
 
     def patch(self, request, *args, **kwargs):
