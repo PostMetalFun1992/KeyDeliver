@@ -72,10 +72,17 @@ class TestKeyDetailRepay:
         assert k.is_delivered
         assert k.is_repayed
 
-    def test_put_prevent_to_repay_not_matched_key(self, api_client):  # noqa: 811
-        k = Key.objects.create(value='TYUI', is_delivered=True)
+    @pytest.mark.parametrize('value, checked_value', [
+        ('TYUI', 'valu'),
+        ('valu', 'VALU'),
+        ('valu', 'valU'),
+    ])
+    def test_put_prevent_to_repay_not_matched_key(
+            self, api_client, value, checked_value
+    ):  # noqa: 811
+        k = Key.objects.create(value=value, is_delivered=True)
         r = api_client.put(
-            f'/keys/{k.id}/', {'value': 'valu'}, format='json'
+            f'/keys/{k.id}/', {'value': checked_value}, format='json'
         )
         k = Key.objects.get(pk=k.pk)
 
