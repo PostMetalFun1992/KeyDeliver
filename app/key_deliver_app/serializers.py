@@ -4,6 +4,8 @@ from key_deliver_app.models import Key
 
 
 class KeySerializer(serializers.ModelSerializer):
+    value = serializers.CharField(required=False)
+
     def validate_value(self, value):
         if not value == self.instance.value:
             raise serializers.ValidationError('Don\'t match')

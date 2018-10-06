@@ -40,7 +40,7 @@ class KeyDetail(generics.RetrieveAPIView):
 
         serializer = self.get_serializer(
             key,
-            data={'value': key.value, 'is_delivered': True}
+            data={'is_delivered': True}
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
